@@ -74,7 +74,7 @@ describe('Authenticate user', () => {
       password: userData.password,
     });
 
-    expect(response.status).toEqual(400);
+    expect(response.status).toEqual(401);
   });
 
   it('should not be able to authenticate an invalid user', async () => {
