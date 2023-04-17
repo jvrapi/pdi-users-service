@@ -1,9 +1,11 @@
 import { CreateUser } from '@/app/use-cases/create-user';
 import { UpdateUser } from '@/app/use-cases/update-user';
-import { Body, Controller, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { CreateUserBody } from '../dtos/create-user-body';
 import { UpdateUserBody } from '../dtos/update-user-body';
-import { AuthGuard } from '@nestjs/passport';
+import { JwtAuthGuard } from '../guards/jwt-auth.guard';
+import { Request } from 'express';
+import { JwtPayload } from 'jsonwebtoken';
 
 @Controller('users')
 export class UserController {
@@ -15,10 +17,11 @@ export class UserController {
     await this.createUser.execute({ email, name, password, username });
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtAuthGuard)
   @Put()
-  async update(@Body() body: UpdateUserBody) {
-    const { id, email, name, username } = body;
+  async update(@Body() body: UpdateUserBody, @Req() req: Request) {
+    const { id } = req.user as JwtPayload;
+    const { email, name, username } = body;
     await this.updateUser.execute({ email, id, name, username });
   }
 }
