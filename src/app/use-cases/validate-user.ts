@@ -1,33 +1,32 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcrypt';
 
 import { UsersRepository } from '../repositories/users-repository';
 import { AuthenticationError } from '../errors/authentication-error';
 import { InternalError } from '../errors/internal-error';
+import { User } from '../entities/user';
 
-interface AuthenticateUserUseCaseRequest {
+interface ValidateUserUseCaseRequest {
   username: string;
   password: string;
 }
 
 @Injectable()
-export class Authenticate {
-  constructor(
-    private usersRepository: UsersRepository,
-    private jwtService: JwtService,
-  ) {}
+export class ValidateUser {
+  constructor(private usersRepository: UsersRepository) {}
 
-  async execute({ username, password }: AuthenticateUserUseCaseRequest) {
+  async execute({ username, password }: ValidateUserUseCaseRequest) {
     try {
       if (!username || !password) {
         throw new AuthenticationError();
       }
 
-      let user = await this.usersRepository.findByUsername(username);
+      let user: User;
 
       if (this.isEmail(username)) {
         user = await this.usersRepository.findByEmail(username);
+      } else {
+        user = await this.usersRepository.findByUsername(username);
       }
 
       if (!user) {
@@ -39,13 +38,8 @@ export class Authenticate {
       if (!passwordIsCorrect) {
         throw new AuthenticationError();
       }
-      const payload = {
-        sub: user.id,
-      };
 
-      const token = await this.jwtService.signAsync(payload);
-
-      return { token };
+      return user;
     } catch (error) {
       if (error instanceof HttpException) {
         throw error;

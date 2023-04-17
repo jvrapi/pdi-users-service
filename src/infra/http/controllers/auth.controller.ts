@@ -1,14 +1,25 @@
-import { Authenticate } from '@/app/use-cases/authenticate';
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
-import { AuthenticateUserBody } from '../dtos/authenticate-user-body';
+import { User } from '@/app/entities/user';
+import { GenerateToken } from '@/app/use-cases/generate-token';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { Request } from 'express';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authenticateUser: Authenticate) {}
-
+  constructor(private readonly generateToken: GenerateToken) {}
+  @UseGuards(AuthGuard('local'))
   @Post()
   @HttpCode(HttpStatus.OK)
-  async authenticate(@Body() body: AuthenticateUserBody) {
-    return this.authenticateUser.execute(body);
+  async authenticate(@Req() req: Request) {
+    const user = req.user as User;
+    return await this.generateToken.execute(user);
   }
 }
