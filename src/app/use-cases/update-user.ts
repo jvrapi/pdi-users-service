@@ -20,7 +20,7 @@ export class UpdateUser {
       throw new UserInfoError('User not found');
     }
 
-    if (email !== user.email) {
+    if (email && email !== user.email) {
       const newEmailAlreadyInUse = await this.usersRepository.findByEmail(
         email,
       );
@@ -29,7 +29,7 @@ export class UpdateUser {
       }
     }
 
-    if (username !== user.username) {
+    if (username && username !== user.username) {
       const newUsernameAlreadyInUse = await this.usersRepository.findByUsername(
         username,
       );
