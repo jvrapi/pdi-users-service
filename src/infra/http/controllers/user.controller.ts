@@ -4,15 +4,17 @@ import {
   Body,
   Controller,
   Get,
+  HttpStatus,
   Post,
   Put,
   Req,
+  Res,
   UseGuards,
 } from '@nestjs/common';
 import { CreateUserBody } from '../dtos/create-user-body';
 import { UpdateUserBody } from '../dtos/update-user-body';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import { JwtPayload } from 'jsonwebtoken';
 import { GetUserById } from '@/app/use-cases/get-user-by-id';
 
@@ -40,15 +42,20 @@ export class UserController {
 
   @UseGuards(JwtAuthGuard)
   @Get('me')
-  async getUser(@Req() req: Request) {
+  async getUser(@Req() req: Request, @Res() response: Response) {
     const { id } = req.user as JwtPayload;
     const user = await this.getUserById.execute(id);
-    return {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
-    };
+    if (!user) {
+      response.status(HttpStatus.NO_CONTENT).send();
+    } else {
+      response.json({
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        username: user.username,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      });
+    }
   }
 }
