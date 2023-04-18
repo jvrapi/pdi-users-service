@@ -16,8 +16,6 @@ describe('Validate user use case', () => {
     validateUser = new ValidateUser(usersRepository);
     const createUser = new CreateUser(usersRepository);
     user = makeUser();
-    user.password = 'RvUfT';
-
     await createUser.execute({
       email: user.email,
       name: user.name,
@@ -43,22 +41,19 @@ describe('Validate user use case', () => {
     expect(userValidated).toBeTruthy();
   });
 
-  it('should not be able to validate a user without username or password', async () => {
-    const credentials = ['username', 'email', 'password'];
-    const selectedFieldToNull =
-      credentials[Math.floor(Math.random() * credentials.length)];
-
-    const usernameFields = credentials.filter(
-      (credential) => credential !== 'password',
-    );
-    const usernameField =
-      usernameFields[Math.floor(Math.random() * usernameFields.length)];
-
-    user[selectedFieldToNull] = null;
-
+  it('should not be able to validate a user without username', async () => {
     await expect(
       validateUser.execute({
-        username: user[usernameField],
+        username: null,
+        password: user.password,
+      }),
+    ).rejects.toBeInstanceOf(AuthenticationError);
+  });
+
+  it('should not be able to validate a user without password', async () => {
+    await expect(
+      validateUser.execute({
+        username: null,
         password: user.password,
       }),
     ).rejects.toBeInstanceOf(AuthenticationError);

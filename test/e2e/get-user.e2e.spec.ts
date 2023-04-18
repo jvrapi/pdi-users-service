@@ -1,3 +1,4 @@
+import { User } from '@/app/entities/user';
 import { AppModule } from '@/infra/app.module';
 import { INestApplication } from '@nestjs/common';
 import { TestingModule, Test } from '@nestjs/testing';
@@ -6,6 +7,7 @@ import request from 'supertest';
 
 describe('Get user', () => {
   let app: INestApplication;
+  let user: User;
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
@@ -13,6 +15,13 @@ describe('Get user', () => {
 
     app = moduleFixture.createNestApplication();
     await app.init();
+    user = makeUser();
+    await request(app.getHttpServer()).post('/users').send({
+      email: user.email,
+      name: user.name,
+      password: user.password,
+      username: user.username,
+    });
   });
 
   afterEach(async () => {
@@ -20,17 +29,9 @@ describe('Get user', () => {
   });
 
   it('should be able to update a user', async () => {
-    const userData = makeUser();
-    userData.password = 'zl5cs0';
-    await request(app.getHttpServer()).post('/users').send({
-      email: userData.email,
-      name: userData.name,
-      password: userData.password,
-      username: userData.username,
-    });
     const authResponse = await request(app.getHttpServer()).post('/auth').send({
-      username: userData.email,
-      password: userData.password,
+      username: user.email,
+      password: user.password,
     });
 
     const getUserResponse = await request(app.getHttpServer())
@@ -39,6 +40,6 @@ describe('Get user', () => {
 
     expect(getUserResponse.status).toEqual(200);
     expect(getUserResponse.body).toBeTruthy();
-    expect(getUserResponse.body.email).toEqual(userData.email);
+    expect(getUserResponse.body.email).toEqual(user.email);
   });
 });

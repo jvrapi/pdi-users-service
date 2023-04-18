@@ -27,6 +27,7 @@ export class UpdateUser {
       if (newEmailAlreadyInUse) {
         throw new UserInfoError('New e-mail already in use');
       }
+      user.email = email;
     }
 
     if (username && username !== user.username) {
@@ -36,11 +37,12 @@ export class UpdateUser {
       if (newUsernameAlreadyInUse) {
         throw new UserInfoError('New username already in use');
       }
+      user.username = username;
     }
 
-    user.email = email;
-    user.name = name;
-    user.username = username;
+    if (name) {
+      user.name = name;
+    }
 
     const userUpdated = await this.usersRepository.save(user);
 
