@@ -4,9 +4,10 @@ import { UpdateUser } from '@/app/use-cases/update-user';
 import { DatabaseModule } from '@/infra/database/database.module';
 import { Module } from '@nestjs/common';
 import { UserController } from '../controllers/user.controller';
+import { MessagingModule } from '@/infra/messaging/messaging.module';
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule, MessagingModule],
   controllers: [UserController],
   providers: [CreateUser, UpdateUser, GetUserById],
 })

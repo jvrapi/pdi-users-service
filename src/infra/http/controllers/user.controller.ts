@@ -17,6 +17,7 @@ import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { Request, Response } from 'express';
 import { JwtPayload } from 'jsonwebtoken';
 import { GetUserById } from '@/app/use-cases/get-user-by-id';
+import { SendMessage } from '@/app/use-cases/send-message';
 
 @Controller('users')
 export class UserController {
@@ -24,12 +25,22 @@ export class UserController {
     private readonly createUser: CreateUser,
     private readonly updateUser: UpdateUser,
     private readonly getUserById: GetUserById,
+    private readonly sendMessage: SendMessage,
   ) {}
 
   @Post()
   async create(@Body() body: CreateUserBody) {
     const { email, name, password, username } = body;
-    await this.createUser.execute({ email, name, password, username });
+    const { id } = await this.createUser.execute({
+      email,
+      name,
+      password,
+      username,
+    });
+    await this.sendMessage.execute({
+      pattern: 'userCreated',
+      message: { userId: id },
+    });
   }
 
   @UseGuards(JwtAuthGuard)
