@@ -1,6 +1,5 @@
 import { SendMessage } from '@/app/use-cases/send-message';
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
@@ -8,7 +7,6 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     ClientsModule.registerAsync([
       {
         name: 'COLLECTIONS_SERVICE',
-        imports: [ConfigModule.forRoot()],
         useFactory: () => {
           return {
             transport: Transport.RMQ,
@@ -28,7 +26,6 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     ClientsModule.registerAsync([
       {
         name: 'COLLECTIONS_SERVICE',
-        imports: [ConfigModule.forRoot()],
         useFactory: () => {
           return {
             transport: Transport.RMQ,
