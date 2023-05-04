@@ -6,7 +6,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
   imports: [
     ClientsModule.registerAsync([
       {
-        name: 'COLLECTIONS_SERVICE',
+        name: 'CollectionsService',
         useFactory: () => {
           return {
             transport: Transport.RMQ,

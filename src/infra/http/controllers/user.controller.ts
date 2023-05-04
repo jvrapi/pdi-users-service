@@ -38,7 +38,7 @@ export class UserController {
       username,
     });
     await this.sendMessage.execute({
-      pattern: 'userCreated',
+      pattern: 'user-created',
       message: { userId: id },
     });
   }

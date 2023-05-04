@@ -10,7 +10,7 @@ interface Message<T> {
 @Injectable()
 export class SendMessage {
   constructor(
-    @Inject('COLLECTIONS_SERVICE')
+    @Inject('CollectionsService')
     private collectionsService: ClientProxy,
   ) {}
 
