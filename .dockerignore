@@ -1,6 +1,7 @@
 coverage/*
 setup/*
 node_modules/*
+dist/
 .husky
 .gitignore
 .env
