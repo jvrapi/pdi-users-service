@@ -57,7 +57,7 @@ export class UserController {
     const { id } = req.user as JwtPayload;
     const user = await this.getUserById.execute(id);
     if (!user) {
-      response.status(HttpStatus.NO_CONTENT).send();
+      response.status(HttpStatus.NOT_FOUND).send();
     } else {
       response.json({
         id: user.id,
