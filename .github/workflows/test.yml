@@ -26,7 +26,7 @@ jobs:
     - run: yarn build
     - name: 'Create env file'
       run: |
-        sudo echo "${{ secrets.ENV_FILE }}" > .env
+        sudo echo "${{ secrets.TEST_ENV_FILE }}" > .env
     - name: 'Running tests'
       run: |
         yarn test
