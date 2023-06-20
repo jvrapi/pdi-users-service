@@ -9,9 +9,7 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [14.x, 16.x, 18.x]
@@ -27,4 +25,9 @@ jobs:
     - run: yarn install --frozen-lockfile
     - run: yarn build
     - run: echo "${{ secrets.ENVS_TESTS }}" > .env.test
-    - run: yarn test
+    - name: 'Create env file'
+      run: |
+        echo "${{ secrets.ENV_FILE }}" > .env
+    - name: 'Running tests'
+      run: |
+        yarn test
