@@ -29,11 +29,11 @@ jobs:
       with:
         file_name: .env.test
         envkey_NODE_ENV: TEST
-        envkey_JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
         envkey_JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
-      run: echo ${{ secrets.JWT_PUBLIC_KEY }}
+        envkey_JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
     - name: "Run tests"
-      run: yarn test
- 
+      run: |
+        echo ${{ secrets.JWT_PUBLIC_KEY }}
+        
 
         
