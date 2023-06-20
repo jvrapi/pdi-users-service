@@ -22,12 +22,10 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-        NODE_ENV: TEST
-        JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }} 
-        JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
-    - run: yarn install --frozen-lockfile
-    - run: yarn build
-    - run: yarn test
+    - name: "Install depedencies"
+        run: yarn install --frozen-lockfile
+    - name: "Run tests"
+        run: yarn test
  
 
         
