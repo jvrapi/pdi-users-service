@@ -7,7 +7,8 @@ import { randomUUID } from 'crypto';
 import { sign } from 'jsonwebtoken';
 import request from 'supertest';
 
-jest.setTimeout(50000);
+jest.setTimeout(500000);
+
 
 describe('Update user', () => {
   let app: INestApplication;

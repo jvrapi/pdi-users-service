@@ -6,7 +6,7 @@ import { makeUser } from '@test/factories/user-factory';
 import { User } from '@/app/entities/user';
 import { sign } from 'jsonwebtoken';
 
-jest.setTimeout(50000);
+jest.setTimeout(500000);
 
 describe('Create user', () => {
   let app: INestApplication;

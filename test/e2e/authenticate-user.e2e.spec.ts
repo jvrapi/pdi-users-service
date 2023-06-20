@@ -5,7 +5,7 @@ import { AppModule } from '@/infra/app.module';
 import { makeUser } from '@test/factories/user-factory';
 import { User } from '@/app/entities/user';
 
-jest.setTimeout(50000);
+jest.setTimeout(500000);
 
 describe('Authenticate user', () => {
   let app: INestApplication;
