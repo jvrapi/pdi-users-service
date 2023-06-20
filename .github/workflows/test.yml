@@ -33,7 +33,7 @@ jobs:
         envkey_JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
     - name: "Run tests"
       run: |
-        echo ${{secrets.JWT_PUBLIC_KEY}}
+        echo ${{secrets.JWT_PUBLIC_KEY}} | sed 's/./& /g' 
         yarn test
         
 
