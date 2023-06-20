@@ -24,10 +24,9 @@ jobs:
         cache: 'npm'
     - run: yarn install --frozen-lockfile
     - run: yarn build
-    - run: echo "${{ secrets.ENVS_TESTS }}" > .env.test
     - name: 'Create env file'
       run: |
-        echo "${{ secrets.ENV_FILE }}" > .env
+        sudo echo "${{ secrets.ENV_FILE }}" > .env
     - name: 'Running tests'
       run: |
         yarn test
