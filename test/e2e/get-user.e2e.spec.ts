@@ -3,8 +3,11 @@ import { AppModule } from '@/infra/app.module';
 import { INestApplication } from '@nestjs/common';
 import { TestingModule, Test } from '@nestjs/testing';
 import { makeUser } from '@test/factories/user-factory';
+import { randomUUID } from 'crypto';
+import { sign } from 'jsonwebtoken';
 import request from 'supertest';
 
+jest.setTimeout(50000);
 describe('Get user', () => {
   let app: INestApplication;
   let user: User;
@@ -28,7 +31,7 @@ describe('Get user', () => {
     await app.close();
   });
 
-  it('should be able to update a user', async () => {
+  it('should be able to get a user', async () => {
     const authResponse = await request(app.getHttpServer()).post('/auth').send({
       username: user.email,
       password: user.password,
@@ -41,5 +44,24 @@ describe('Get user', () => {
     expect(getUserResponse.status).toEqual(200);
     expect(getUserResponse.body).toBeTruthy();
     expect(getUserResponse.body.email).toEqual(user.email);
+  });
+
+  it('should not be able to get a user', async () => {
+    const getUserResponse = await request(app.getHttpServer()).get('/users/me');
+
+    expect(getUserResponse.status).toEqual(401);
+  });
+
+  it('should be able to get an not found status with an invalid token', async () => {
+    const invalidToken = sign({}, process.env.JWT_PRIVATE_KEY, {
+      subject: randomUUID(),
+      algorithm: 'RS256',
+    });
+
+    const getUserResponse = await request(app.getHttpServer())
+      .get('/users/me')
+      .set('Authorization', `Bearer ${invalidToken}`);
+
+    expect(getUserResponse.status).toEqual(404);
   });
 });

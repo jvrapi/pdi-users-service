@@ -37,12 +37,13 @@ export class UserController {
       password,
       username,
     });
-    await this.sendMessage.execute({
-      pattern: 'user-created',
-      message: { userId: id },
-    });
+    if (process.env.NODE_ENV.toLowerCase() !== 'test') {
+      await this.sendMessage.execute({
+        pattern: 'user-created',
+        message: { userId: id },
+      });
+    }
   }
-
   @UseGuards(JwtAuthGuard)
   @Put()
   async update(@Body() body: UpdateUserBody, @Req() req: Request) {

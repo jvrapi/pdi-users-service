@@ -18,7 +18,7 @@
     "test:watch": "jest --watch",
     "test:cov": "yarn nyc --reporter html yarn test",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config jest-e2e.config.ts --forceExit",
+    "test:e2e": "jest --config jest-e2e.config.ts --detectOpenHandles",
     "test:unit": "jest --config ./jest-unit.config.ts --detectOpenHandles --forceExit"
   },
   "dependencies": {
@@ -29,7 +29,7 @@
     "@nestjs/microservices": "^9.4.0",
     "@nestjs/passport": "^9.0.3",
     "@nestjs/platform-express": "^9.0.0",
-    "@prisma/client": "^4.11.0",
+    "@prisma/client": "4.8.1",
     "amqp-connection-manager": "^4.1.12",
     "amqplib": "^0.10.3",
     "bcrypt": "^5.1.0",

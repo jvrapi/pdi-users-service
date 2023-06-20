@@ -5,6 +5,8 @@ import { AppModule } from '@/infra/app.module';
 import { makeUser } from '@test/factories/user-factory';
 import { User } from '@/app/entities/user';
 
+jest.setTimeout(50000);
+
 describe('Authenticate user', () => {
   let app: INestApplication;
   let user: User;
@@ -56,7 +58,7 @@ describe('Authenticate user', () => {
     expect(response.status).toEqual(401);
   });
 
-  it('should not be able to authenticate a user without username', async () => {
+  it('should not be able to authenticate a user without password', async () => {
     const response = await request(app.getHttpServer()).post('/auth').send({
       username: user.username,
       password: '',

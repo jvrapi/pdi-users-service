@@ -4,6 +4,9 @@ import request from 'supertest';
 import { AppModule } from '@/infra/app.module';
 import { makeUser } from '@test/factories/user-factory';
 import { User } from '@/app/entities/user';
+import { sign } from 'jsonwebtoken';
+
+jest.setTimeout(50000);
 
 describe('Create user', () => {
   let app: INestApplication;

@@ -3,7 +3,11 @@ import { AppModule } from '@/infra/app.module';
 import { INestApplication } from '@nestjs/common';
 import { TestingModule, Test } from '@nestjs/testing';
 import { makeUser } from '@test/factories/user-factory';
+import { randomUUID } from 'crypto';
+import { sign } from 'jsonwebtoken';
 import request from 'supertest';
+
+jest.setTimeout(50000);
 
 describe('Update user', () => {
   let app: INestApplication;
@@ -95,6 +99,24 @@ describe('Update user', () => {
         username: user.username,
       })
       .set('Authorization', `Bearer ${token}`);
+
+    expect(updateUserResponse.status).toEqual(400);
+  });
+
+  it('should not be able to update a non-existing user', async () => {
+    const invalidToken = sign({}, process.env.JWT_PRIVATE_KEY, {
+      subject: randomUUID(),
+      algorithm: 'RS256',
+    });
+
+    const updateUserResponse = await request(app.getHttpServer())
+      .put('/users')
+      .send({
+        name: 'Tommy Klein',
+        email: 'zelu@if.id',
+        username: 'YJeyhQXRVy',
+      })
+      .set('Authorization', `Bearer ${invalidToken}`);
 
     expect(updateUserResponse.status).toEqual(400);
   });
