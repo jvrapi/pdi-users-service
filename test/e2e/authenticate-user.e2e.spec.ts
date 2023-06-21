@@ -4,12 +4,12 @@ import request from 'supertest';
 import { AppModule } from '@/infra/app.module';
 import { makeUser } from '@test/factories/user-factory';
 import { User } from '@/app/entities/user';
-
-jest.setTimeout(500000);
+import dataSource from '@/infra/database/typeorm/config/data-source';
 
 describe('Authenticate user', () => {
   let app: INestApplication;
   let user: User;
+
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
@@ -17,6 +17,7 @@ describe('Authenticate user', () => {
 
     app = moduleFixture.createNestApplication();
     await app.init();
+    await dataSource.runMigrations();
     user = makeUser();
     await request(app.getHttpServer()).post('/users').send({
       email: user.email,
@@ -27,6 +28,7 @@ describe('Authenticate user', () => {
   });
 
   afterEach(async () => {
+    await dataSource.destroy();
     await app.close();
   });
 

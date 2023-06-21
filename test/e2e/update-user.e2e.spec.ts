@@ -1,5 +1,6 @@
 import { User } from '@/app/entities/user';
 import { AppModule } from '@/infra/app.module';
+import dataSource from '@/infra/database/typeorm/config/data-source';
 import { INestApplication } from '@nestjs/common';
 import { TestingModule, Test } from '@nestjs/testing';
 import { makeUser } from '@test/factories/user-factory';
@@ -20,6 +21,7 @@ describe('Update user', () => {
 
     app = moduleFixture.createNestApplication();
     await app.init();
+    await dataSource.runMigrations();
     user = makeUser();
     await request(app.getHttpServer()).post('/users').send({
       email: user.email,
@@ -31,6 +33,7 @@ describe('Update user', () => {
 
   afterEach(async () => {
     await app.close();
+    await dataSource.destroy();
   });
 
   it('should be able to update a user', async () => {

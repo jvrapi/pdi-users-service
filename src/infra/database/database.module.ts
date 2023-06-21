@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
-import { PrismaService } from './prisma/prisma.service';
 import { UsersRepository } from '@/app/repositories/users-repository';
-import { PrismaUsersRepository } from './prisma/repositories/prisma-users-repository';
+import { databaseProviders } from './typeorm/database.provider';
+import { TypeOrmUsersRepository } from './typeorm/repositories/typeorm-users-repository';
 
 @Module({
   providers: [
-    PrismaService,
+    ...databaseProviders,
     {
       provide: UsersRepository,
-      useClass: PrismaUsersRepository,
+      useClass: TypeOrmUsersRepository,
     },
   ],
   exports: [UsersRepository],
