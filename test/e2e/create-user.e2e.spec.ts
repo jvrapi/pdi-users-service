@@ -4,9 +4,7 @@ import request from 'supertest';
 import { AppModule } from '@/infra/app.module';
 import { makeUser } from '@test/factories/user-factory';
 import { User } from '@/app/entities/user';
-import { sign } from 'jsonwebtoken';
-
-jest.setTimeout(50000);
+import dataSource from '@/infra/database/typeorm/config/data-source';
 
 describe('Create user', () => {
   let app: INestApplication;
@@ -19,9 +17,11 @@ describe('Create user', () => {
 
     app = moduleFixture.createNestApplication();
     await app.init();
+    await dataSource.runMigrations();
   });
 
   afterEach(async () => {
+    await dataSource.destroy();
     await app.close();
   });
 

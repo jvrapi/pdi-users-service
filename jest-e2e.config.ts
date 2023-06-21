@@ -4,7 +4,7 @@ import jestConfig from './jest.config';
 
 const config: Config = {
   ...jestConfig,
-  testEnvironment: './prisma/prisma-test-environment.ts',
+  testEnvironment: './test/configs/e2e-config.ts',
   testRegex: '.e2e.spec.ts$',
   coverageDirectory: './coverage/e2e',
 };
