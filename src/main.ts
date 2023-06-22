@@ -2,6 +2,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './infra/app.module';
 import { NewrelicInterceptor } from './app/interceptors/new-relic-interceptor';
+import { Logger } from '@nestjs/common';
 
 async function bootstrap() {
   const PORT = process.env.PORT ? Number(process.env.PORT) : 3000;
@@ -9,6 +10,8 @@ async function bootstrap() {
 
   app.useGlobalInterceptors(new NewrelicInterceptor());
 
-  await app.listen(PORT);
+  await app.listen(PORT, () =>
+    new Logger().log(`Server is running on port ${PORT} 🔥`),
+  );
 }
 bootstrap();

@@ -1,5 +1,6 @@
 import { User } from '@/app/entities/user';
 import { AppModule } from '@/infra/app.module';
+import dataSource from '@/infra/database/typeorm/config/data-source';
 import { INestApplication } from '@nestjs/common';
 import { TestingModule, Test } from '@nestjs/testing';
 import { makeUser } from '@test/factories/user-factory';
@@ -7,7 +8,6 @@ import { randomUUID } from 'crypto';
 import { sign } from 'jsonwebtoken';
 import request from 'supertest';
 
-jest.setTimeout(50000);
 describe('Get user', () => {
   let app: INestApplication;
   let user: User;
@@ -18,6 +18,7 @@ describe('Get user', () => {
 
     app = moduleFixture.createNestApplication();
     await app.init();
+    await dataSource.runMigrations();
     user = makeUser();
     await request(app.getHttpServer()).post('/users').send({
       email: user.email,
@@ -28,6 +29,7 @@ describe('Get user', () => {
   });
 
   afterEach(async () => {
+    await dataSource.destroy();
     await app.close();
   });
 
