@@ -25,10 +25,13 @@ jobs:
     - name: "Install dependencies"
       run: yarn install --frozen-lockfile
     - name: "Create env file"
-      run: |
-        touch .env.test
-        echo "${{ secrets.ENV_TEST }}" > .env.test
-      
+      uses: SpicyPizza/create-envfile@v2.0
+      with:
+        file_name: .env.test
+        envkey_NODE_ENV: TEST
+        envkey_JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
+        envkey_JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
+        envkey_TOKEN_EXPIRATION: ${{ secrets.TOKEN_EXPIRATION }}
     - name: "Run tests"
       run: |
         yarn test
