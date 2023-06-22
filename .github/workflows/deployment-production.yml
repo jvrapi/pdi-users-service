@@ -49,6 +49,8 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 18.x
+      - name: Install yarn
+        run: npm install -g yarn
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       - name: Create env file
@@ -59,3 +61,6 @@ jobs:
         run: rm -rf node_module
       - name: Install production dependencies
         run: yarn --production
+      - name: Clean up
+        if: always()
+        run: npm uninstall -g yarn
