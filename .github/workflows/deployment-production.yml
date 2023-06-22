@@ -53,6 +53,8 @@ jobs:
         run: npm install -g yarn
       - name: Install dependencies
         run: yarn install --frozen-lockfile
+      - name: Build image
+        run: yarn build
       - name: Create env file
         run: | 
           touch .env
