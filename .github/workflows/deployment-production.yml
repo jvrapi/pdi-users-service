@@ -1,0 +1,61 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  test-ci:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - name: "Install dependencies"
+      run: yarn install --frozen-lockfile
+    - name: "Create env file"
+      uses: SpicyPizza/create-envfile@v2.0
+      with:
+        file_name: .env.test
+        envkey_NODE_ENV: TEST
+        envkey_JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
+        envkey_JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
+        envkey_TOKEN_EXPIRATION: ${{ secrets.TOKEN_EXPIRATION }}
+    - name: "Run tests"
+      run: |
+        yarn test
+
+  deploy-production:
+    needs: test-ci
+    if: github.ref == 'refs/heads/main'
+    runs-on: self-hosted
+    concurrency: deploy-to-production
+    environment: production
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18.x
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Create env file
+        run: | 
+          touch .env
+          echo "${{ secrets.ENV_PRODUCTION }}" > .env
+      - name: Remove node_modules
+        run: rm -rf node_module
+      - name: Install production dependencies
+        run: yarn --production
