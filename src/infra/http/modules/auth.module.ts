@@ -9,6 +9,9 @@ import { DatabaseModule } from '@/infra/database/database.module';
 import { GenerateToken } from '@/app/use-cases/generate-token';
 import { JwtStrategy } from '../strategies/jwt-strategy';
 
+const base64ToAcii = (key: string) =>
+  Buffer.from(key, 'base64').toString('ascii');
+
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -16,10 +19,10 @@ import { JwtStrategy } from '../strategies/jwt-strategy';
     DatabaseModule,
     JwtModule.registerAsync({
       useFactory: () => ({
-        privateKey: process.env.JWT_PRIVATE_KEY,
-        publicKey: process.env.JWT_PUBLIC_KEY,
+        privateKey: base64ToAcii(process.env.JWT_PRIVATE_KEY),
+        publicKey: base64ToAcii(process.env.JWT_PUBLIC_KEY),
         signOptions: {
-          expiresIn: '1h',
+          expiresIn: process.env.JWT_EXPIRATION,
           algorithm: 'RS256',
         },
       }),

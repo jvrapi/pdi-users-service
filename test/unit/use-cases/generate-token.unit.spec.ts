@@ -6,16 +6,21 @@ describe('Generate token use case', () => {
   let jwtService: JwtService;
   let generateToken: GenerateToken;
 
+  const base64ToAcii = (key: string) =>
+    Buffer.from(key, 'base64').toString('ascii');
+
   beforeEach(() => {
     console.log({
-      privateKey: process.env.JWT_PRIVATE_KEY,
-      publicKey: process.env.JWT_PUBLIC_KEY,
+      privateKeyBase64: process.env.JWT_PRIVATE_KEY,
+      publicKeyBase64: process.env.JWT_PUBLIC_KEY,
+      privateKey: base64ToAcii(process.env.JWT_PRIVATE_KEY),
+      publicKey: base64ToAcii(process.env.JWT_PUBLIC_KEY),
     });
     jwtService = new JwtService({
-      privateKey: process.env.JWT_PRIVATE_KEY,
-      publicKey: process.env.JWT_PUBLIC_KEY,
+      privateKey: base64ToAcii(process.env.JWT_PRIVATE_KEY),
+      publicKey: base64ToAcii(process.env.JWT_PUBLIC_KEY),
       signOptions: {
-        expiresIn: '1h',
+        expiresIn: process.env.JWT_EXPIRATION,
         algorithm: 'RS256',
       },
     });
