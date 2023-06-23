@@ -66,11 +66,11 @@ jobs:
           envkey_TOKEN_EXPIRATION: ${{ secrets.TOKEN_EXPIRATION }}
           envkey_RABBITMQ_URL: ${{ secrets.RABBITMQ_URL }}
           envkey_RABBITMQ_USERS_QUEUE: ${{ secrets.RABBITMQ_USERS_QUEUE }}
-          envkey_NEW_RELIC_APP_NAME: ${{ NEW_RELIC_APP_NAME }}
-          envkey_NEW_RELIC_LABELS: ${{ NEW_RELIC_LABELS }}
-          envkey_NEW_RELIC_LICENSE_KEY: ${{ NEW_RELIC_LICENSE_KEY }}
-          envkey_NEW_RELIC_LOG: ${{ NEW_RELIC_LOG }}
-          envkey_NEW_RELIC_LOG_LEVEL: ${{NEW_RELIC_LOG_LEVEL }}
-          envkey_NEW_RELIC_NO_CONFIG_FILE: ${{ NEW_RELIC_NO_CONFIG_FILE }}
+          envkey_NEW_RELIC_APP_NAME: ${{ secrets.NEW_RELIC_APP_NAME }}
+          envkey_NEW_RELIC_LABELS: ${{ secrets.NEW_RELIC_LABELS }}
+          envkey_NEW_RELIC_LICENSE_KEY: ${{ secrets.NEW_RELIC_LICENSE_KEY }}
+          envkey_NEW_RELIC_LOG: ${{ secrets.NEW_RELIC_LOG }}
+          envkey_NEW_RELIC_LOG_LEVEL: ${{ secrets.NEW_RELIC_LOG_LEVEL }}
+          envkey_NEW_RELIC_NO_CONFIG_FILE: ${{ secrets.NEW_RELIC_NO_CONFIG_FILE }}
       - name: Update server
         run: pm2 restart server
