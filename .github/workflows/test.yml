@@ -23,7 +23,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - name: "Install dependencies"
-      run: yarn install --frozen-lockfile
+      run: yarn install
     - name: "Create env file"
       run: |
         echo "${{ secrets.ENV_TEST }}" > .env
