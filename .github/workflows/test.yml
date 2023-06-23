@@ -26,8 +26,8 @@ jobs:
       run: yarn install --frozen-lockfile
     - name: "Create env file"
       run: |
-        touch .env
         echo "${{ secrets.ENV_TEST }}" > .env
+        cat .env
     - name: "Run tests"
       run: |
         yarn test
