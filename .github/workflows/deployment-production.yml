@@ -63,6 +63,7 @@ jobs:
         with:
           file_name: .env
           envkey_JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
+          envkey_DATABASE_URL: ${{ secrets.DATABASE_URL }}
           envkey_JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
           envkey_TOKEN_EXPIRATION: ${{ secrets.TOKEN_EXPIRATION }}
           envkey_RABBITMQ_URL: ${{ secrets.RABBITMQ_URL }}
