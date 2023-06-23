@@ -10,7 +10,6 @@ import request from 'supertest';
 
 jest.setTimeout(500000);
 
-
 describe('Update user', () => {
   let app: INestApplication;
   let user: User;

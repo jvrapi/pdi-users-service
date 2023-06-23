@@ -9,23 +9,24 @@ import { DatabaseModule } from '@/infra/database/database.module';
 import { GenerateToken } from '@/app/use-cases/generate-token';
 import { JwtStrategy } from '../strategies/jwt-strategy';
 
-const base64ToAcii = (key: string) =>
-  Buffer.from(key, 'base64').toString('ascii');
-
 @Module({
   imports: [
     ConfigModule.forRoot(),
     PassportModule,
     DatabaseModule,
     JwtModule.registerAsync({
-      useFactory: () => ({
-        privateKey: base64ToAcii(process.env.JWT_PRIVATE_KEY),
-        publicKey: base64ToAcii(process.env.JWT_PUBLIC_KEY),
-        signOptions: {
-          expiresIn: process.env.JWT_EXPIRATION,
-          algorithm: 'RS256',
-        },
-      }),
+      useFactory: () => {
+        const privateKey = process.env.JWT_PRIVATE_KEY;
+        const publicKey = process.env.JWT_PUBLIC_KEY;
+        return {
+          privateKey,
+          publicKey,
+          signOptions: {
+            expiresIn: process.env.JWT_EXPIRATION,
+            algorithm: 'RS256',
+          },
+        };
+      },
     }),
   ],
   controllers: [AuthController],
