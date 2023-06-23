@@ -18,6 +18,12 @@ import { JwtStrategy } from '../strategies/jwt-strategy';
       useFactory: () => {
         const privateKey = process.env.JWT_PRIVATE_KEY;
         const publicKey = process.env.JWT_PUBLIC_KEY;
+        console.log({
+          [AuthModule.name]: {
+            privateKey,
+            publicKey,
+          },
+        });
         return {
           privateKey,
           publicKey,
