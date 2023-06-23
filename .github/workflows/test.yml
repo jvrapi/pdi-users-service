@@ -23,12 +23,12 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - name: "Install dependencies"
-      run: yarn install
-    - name: "Create env file"
-      run: |
-        echo "${{ secrets.ENV_TEST }}" > .env
-        cat .env
+      run: yarn install --frozen-lockfile
     - name: "Run tests"
+      env: 
+        JWT_EXPIRATION: ${{ secrets.JWT_EXPIRATION }}
+        JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
+        JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
       run: |
         yarn test
         
