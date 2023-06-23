@@ -66,3 +66,5 @@ jobs:
       - name: Clean up
         if: always()
         run: npm uninstall -g yarn
+      - name: Update server
+        run: pm2 restart server
