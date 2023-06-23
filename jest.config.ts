@@ -15,6 +15,8 @@ const config: Config = {
   }),
   testEnvironment: 'node',
   setupFiles: ['./test/jest-setup.ts'],
+  testRegex: '.spec.ts$',
+  coverageDirectory: './coverage',
 };
 
 export default config;

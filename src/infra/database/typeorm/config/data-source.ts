@@ -19,7 +19,7 @@ const mysqlConfig: MysqlConnectionOptions = {
 };
 
 const configToUse =
-  NODE_ENV.toLowerCase() === 'test' ? sqliteConfig : mysqlConfig;
+  NODE_ENV?.toLowerCase() === 'test' ? sqliteConfig : mysqlConfig;
 
 export const dataSourceOptions = {
   ...configToUse,

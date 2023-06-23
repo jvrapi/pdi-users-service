@@ -27,7 +27,6 @@ jobs:
       run: yarn install --frozen-lockfile
     - name: "Create env file"
       run: |
-        touch .env
         echo "${{ secrets.ENV_TEST }}" > .env
     - name: "Run tests"
       run: |
@@ -51,10 +50,6 @@ jobs:
         run: yarn install --frozen-lockfile
       - name: Build image
         run: yarn build
-      - name: Create env file
-        run: | 
-          touch .env
-          echo "${{ secrets.ENV_PRODUCTION }}" > .env
       - name: Remove node_modules
         run: rm -rf node_module
       - name: Install production dependencies
@@ -62,5 +57,20 @@ jobs:
       - name: Clean up
         if: always()
         run: npm uninstall -g yarn
+      - name: Create .env file"
+        uses: SpicyPizza/create-envfile@v2.0
+        with:
+          file_name: .env
+          envkey_JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
+          envkey_JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
+          envkey_TOKEN_EXPIRATION: ${{ secrets.TOKEN_EXPIRATION }}
+          envkey_RABBITMQ_URL: ${{ secrets.RABBITMQ_URL }}
+          envkey_RABBITMQ_USERS_QUEUE: ${{ secrets.RABBITMQ_USERS_QUEUE }}
+          envkey_NEW_RELIC_APP_NAME: ${{ NEW_RELIC_APP_NAME }}
+          envkey_NEW_RELIC_LABELS: ${{ NEW_RELIC_LABELS }}
+          envkey_NEW_RELIC_LICENSE_KEY: ${{ NEW_RELIC_LICENSE_KEY }}
+          envkey_NEW_RELIC_LOG: ${{ NEW_RELIC_LOG }}
+          envkey_NEW_RELIC_LOG_LEVEL: ${{NEW_RELIC_LOG_LEVEL }}
+          envkey_NEW_RELIC_NO_CONFIG_FILE: ${{ NEW_RELIC_NO_CONFIG_FILE }}
       - name: Update server
         run: pm2 restart server

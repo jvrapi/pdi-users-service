@@ -6,7 +6,6 @@ import { Logger } from '@nestjs/common';
 
 async function bootstrap() {
   const PORT = process.env.PORT ? Number(process.env.PORT) : 3000;
-  console.log({ key: process.env.JWT_PRIVATE_KEY });
   const app = await NestFactory.create(AppModule);
 
   app.useGlobalInterceptors(new NewrelicInterceptor());

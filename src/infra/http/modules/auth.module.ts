@@ -15,14 +15,18 @@ import { JwtStrategy } from '../strategies/jwt-strategy';
     PassportModule,
     DatabaseModule,
     JwtModule.registerAsync({
-      useFactory: () => ({
-        privateKey: process.env.JWT_PRIVATE_KEY,
-        publicKey: process.env.JWT_PUBLIC_KEY,
-        signOptions: {
-          expiresIn: '1h',
-          algorithm: 'RS256',
-        },
-      }),
+      useFactory: () => {
+        const privateKey = process.env.JWT_PRIVATE_KEY;
+        const publicKey = process.env.JWT_PUBLIC_KEY;
+        return {
+          privateKey,
+          publicKey,
+          signOptions: {
+            expiresIn: process.env.JWT_EXPIRATION,
+            algorithm: 'RS256',
+          },
+        };
+      },
     }),
   ],
   controllers: [AuthController],
