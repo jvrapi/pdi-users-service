@@ -65,7 +65,7 @@ jobs:
           envkey_JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
           envkey_DATABASE_URL: ${{ secrets.DATABASE_URL }}
           envkey_JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
-          envkey_TOKEN_EXPIRATION: ${{ secrets.JWT_EXPIRATION }}
+          envkey_JWT_EXPIRATION: ${{ secrets.JWT_EXPIRATION }}
           envkey_RABBITMQ_URL: ${{ secrets.RABBITMQ_URL }}
           envkey_RABBITMQ_USERS_QUEUE: ${{ secrets.RABBITMQ_USERS_QUEUE }}
           envkey_NEW_RELIC_APP_NAME: ${{ secrets.NEW_RELIC_APP_NAME }}
