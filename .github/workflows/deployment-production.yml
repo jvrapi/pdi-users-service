@@ -1,7 +1,7 @@
 # This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: Deploy
+name: Deploy to produtcion
 
 on:
   workflow_dispatch:
@@ -62,17 +62,18 @@ jobs:
         uses: SpicyPizza/create-envfile@v2.0
         with:
           file_name: .env
+          envkey_NODE_ENV: "PRODUCTION"
           envkey_JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
-          envkey_DATABASE_URL: ${{ secrets.DATABASE_URL }}
           envkey_JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
-          envkey_JWT_EXPIRATION: ${{ secrets.JWT_EXPIRATION }}
-          envkey_RABBITMQ_URL: ${{ secrets.RABBITMQ_URL }}
-          envkey_RABBITMQ_USERS_QUEUE: ${{ secrets.RABBITMQ_USERS_QUEUE }}
-          envkey_NEW_RELIC_APP_NAME: ${{ secrets.NEW_RELIC_APP_NAME }}
-          envkey_NEW_RELIC_LABELS: ${{ secrets.NEW_RELIC_LABELS }}
-          envkey_NEW_RELIC_LICENSE_KEY: ${{ secrets.NEW_RELIC_LICENSE_KEY }}
-          envkey_NEW_RELIC_LOG: ${{ secrets.NEW_RELIC_LOG }}
-          envkey_NEW_RELIC_LOG_LEVEL: ${{ secrets.NEW_RELIC_LOG_LEVEL }}
-          envkey_NEW_RELIC_NO_CONFIG_FILE: ${{ secrets.NEW_RELIC_NO_CONFIG_FILE }}
+          envkey_DATABASE_URL: "${{ secrets.DATABASE_URL }}"
+          envkey_JWT_EXPIRATION: "${{ secrets.JWT_EXPIRATION }}"
+          envkey_RABBITMQ_URL: "${{ secrets.RABBITMQ_URL }}"
+          envkey_RABBITMQ_USERS_QUEUE: "${{ secrets.RABBITMQ_USERS_QUEUE }}"
+          envkey_NEW_RELIC_APP_NAME: "${{ secrets.NEW_RELIC_APP_NAME }}"
+          envkey_NEW_RELIC_LABELS: "${{ secrets.NEW_RELIC_LABELS }}"
+          envkey_NEW_RELIC_LICENSE_KEY: "${{ secrets.NEW_RELIC_LICENSE_KEY }}"
+          envkey_NEW_RELIC_LOG: "${{ secrets.NEW_RELIC_LOG }}"
+          envkey_NEW_RELIC_LOG_LEVEL: "${{ secrets.NEW_RELIC_LOG_LEVEL }}"
+          envkey_NEW_RELIC_NO_CONFIG_FILE: "${{ secrets.NEW_RELIC_NO_CONFIG_FILE }}"
       - name: Update server
         run: pm2 restart server
