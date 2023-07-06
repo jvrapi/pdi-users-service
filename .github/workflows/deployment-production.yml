@@ -28,7 +28,7 @@ jobs:
           yarn test
 
   deploy-production:
-    needs: test-ci
+    needs: tests
     if: github.ref == 'refs/heads/main'
     runs-on: self-hosted
     concurrency: deploy-to-production
