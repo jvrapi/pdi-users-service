@@ -1,7 +1,6 @@
 on:
   workflow_dispatch:
   push:
-    
 
 jobs:
   tests:
@@ -12,21 +11,21 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - name: "Install dependencies"
-      run: yarn install --frozen-lockfile
-    - name: "Run tests"
-      env: 
-        JWT_EXPIRATION: ${{ secrets.JWT_EXPIRATION }}
-        JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
-        JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
-      run: |
-        yarn test
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+      - name: "Install dependencies"
+        run: yarn install --frozen-lockfile
+      - name: "Run tests"
+        env:
+          JWT_EXPIRATION: ${{ secrets.JWT_EXPIRATION }}
+          JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
+          JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
+        run: |
+          yarn test
 
   deploy-production:
     needs: test-ci
