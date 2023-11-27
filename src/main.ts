@@ -1,4 +1,5 @@
-// import 'dotenv/config';
+import 'dotenv/config';
+import 'newrelic';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './infra/app.module';
 import { NewrelicInterceptor } from './app/interceptors/new-relic-interceptor';

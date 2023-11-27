@@ -37,7 +37,7 @@ export class UserController {
       password,
       username,
     });
-    if (process.env.NODE_ENV.toLowerCase() !== 'test') {
+    if (process.env.NODE_ENV?.toLowerCase() !== 'test') {
       await this.sendMessage.execute({
         pattern: 'user-created',
         message: { userId: id },
